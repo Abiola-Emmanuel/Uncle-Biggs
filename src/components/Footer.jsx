@@ -12,10 +12,10 @@ const Footer = () => {
       <div className="absolute inset-0 bg-white/70" />
       <div className="relative mx-auto grid max-w-7xl gap-8 px-5 text-center sm:grid-cols-2 lg:grid-cols-4 lg:px-8">
         {[
-          [Utensils, "About Restaurant", "Enjoy a wonderful cafe dining experience"],
+          [Utensils, "About Uncle Biggs", "Fresh meals, big portions, and a place everyone can feel at home"],
           [Phone, "Let's Talk", "Phone: 1-800-222-002"],
-          [Mail, "Book A Table", "luxedining@gmail.com"],
-          [MapPin, "Contact Us", "White House, United States Of America"],
+          [Mail, "Order & Events", "hello@unclebiggs.com"],
+          [MapPin, "Visit Us", "Your favorite neighborhood restaurant"],
         ].map(([Icon, title, text]) => (
           <div key={title} className="flex flex-col items-center gap-3 text-stone-700">
             <Icon size={36} />

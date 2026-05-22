@@ -5,16 +5,10 @@ import {
   Aperture,
   Award,
   BookOpen,
-  ChefHat,
   CircleDot,
-  Mail,
-  MapPin,
   Phone,
   ShoppingBag,
-  Star,
-  Table2,
   Truck,
-  Utensils,
   Wifi,
 } from "lucide-react";
 import { useState } from "react";
@@ -26,71 +20,59 @@ const categoryData = {
   "Main Course": {
     icon: "/starters.svg",
     items: [
-      ["Truffle Risotto", "Creamy Arborio rice infused with black truffle essence.", "$12.00", "/expensive1.jpg"],
-      ["Reserve Red Wine", "Finished with parmesan shavings and a hint of red wine.", "$22.00", "/expensive2.jpg"],
-      ["Seared Atlantic Salmon", "Crisped salmon served over lemon-herb greens.", "$15.00", "/expensive3.jpg"],
-      ["Filet Mignon au Poivre", "Tender beef filet glazed with a peppercorn sauce.", "$22.00", "/expensive4.jpg"],
-      ["Pan-Roasted Duck Breast", "Duck breast with pomegranate and caramelized carrots.", "$42.00", "/expensive5.jpg"],
-      ["Herb-Crusted Lamb Rack", "Oven-roasted lamb crusted with rosemary and thyme.", "$32.00", "/expensive6.jpg"],
+      ["Biggs Jollof Rice", "Smoky party-style rice served with chicken and slaw.", "$12.00", "/expensive1.jpg"],
+      ["Grilled Chicken Plate", "Flame-grilled chicken with fries and house pepper sauce.", "$22.00", "/expensive2.jpg"],
+      ["Crispy Fish Meal", "Golden fish fillet with fresh greens and lemon dressing.", "$15.00", "/expensive3.jpg"],
+      ["Big Beef Burger", "Juicy beef patty, cheese, lettuce, and Uncle Biggs sauce.", "$22.00", "/expensive4.jpg"],
+      ["Spicy Chicken Pasta", "Creamy pasta tossed with grilled chicken and peppers.", "$42.00", "/expensive5.jpg"],
+      ["Family Rice Combo", "Rice, chicken, plantain, salad, and chilled drinks.", "$32.00", "/expensive6.jpg"],
     ],
   },
-  Appetizers: {
+  Starters: {
     icon: "/nonvage.svg",
     items: [
-      ["Crispy Calamari", "Lemon aioli, herbs, and a light pepper crust.", "$9.00", "/foods-1.webp"],
-      ["Charred Prawn Toast", "Sourdough, smoked tomato butter, and basil.", "$11.00", "/foods-2.webp"],
-      ["Beef Carpaccio", "Capers, parmesan, rocket, and olive oil.", "$16.00", "/foods-3.webp"],
-      ["Burrata Plate", "Warm tomatoes, pesto, and grilled focaccia.", "$14.00", "/foods-4.webp"],
-      ["Spiced Chicken Bites", "Crispy bites with citrus yogurt dip.", "$10.00", "/foods-5.webp"],
-      ["Mini Crab Cakes", "Golden crab cakes with herb remoulade.", "$18.00", "/foods-6.webp"],
+      ["Crispy Chicken Bites", "Crunchy chicken pieces with a creamy pepper dip.", "$9.00", "/foods-1.webp"],
+      ["Mini Meat Pies", "Warm pastry pockets packed with seasoned filling.", "$11.00", "/foods-2.webp"],
+      ["Peppered Beef Skewers", "Tender beef bites finished with onions and spice.", "$16.00", "/foods-3.webp"],
+      ["Plantain Cups", "Sweet fried plantain served with a fresh tomato salsa.", "$14.00", "/foods-4.webp"],
+      ["Spiced Chicken Wings", "Sticky wings tossed in Uncle Biggs hot sauce.", "$10.00", "/foods-5.webp"],
+      ["Snack Box", "A shareable mix of fries, bites, dips, and crunch.", "$18.00", "/foods-6.webp"],
     ],
   },
   Vegetarian: {
     icon: "/vegetarian.svg",
     items: [
-      ["Garden Herb Salad", "Leafy greens, avocado, almonds, and vinaigrette.", "$10.00", "/salad2.jpg"],
-      ["Roasted Pepper Bowl", "Sweet peppers, grains, feta, and basil oil.", "$13.00", "/salad3.jpg"],
-      ["Tuscan Mushroom Pasta", "Creamy wild mushroom sauce and fresh parsley.", "$18.00", "/salad5.jpg"],
-      ["Grilled Vegetable Stack", "Seasonal vegetables with smoked tomato jus.", "$16.00", "/salad6.jpg"],
-      ["Citrus Couscous", "Herbs, raisins, chickpeas, and lemon dressing.", "$12.00", "/salad7.jpg"],
-      ["Margherita Flatbread", "Tomato, mozzarella, basil, and chili honey.", "$15.00", "/hero-pizza.png"],
+      ["Fresh Garden Salad", "Leafy greens, avocado, sweet corn, and house dressing.", "$10.00", "/salad2.jpg"],
+      ["Roasted Pepper Bowl", "Sweet peppers, grains, feta, and herbed oil.", "$13.00", "/salad3.jpg"],
+      ["Creamy Mushroom Pasta", "Mushroom sauce, herbs, and a little pepper kick.", "$18.00", "/salad5.jpg"],
+      ["Vegetable Rice Plate", "Seasoned rice with grilled vegetables and sauce.", "$16.00", "/salad6.jpg"],
+      ["Citrus Couscous Salad", "Herbs, raisins, chickpeas, and lemon dressing.", "$12.00", "/salad7.jpg"],
+      ["Cheesy Tomato Flatbread", "Tomato, mozzarella, basil, and chili honey.", "$15.00", "/hero-pizza.png"],
     ],
   },
   Dessert: {
     icon: "/dessert.svg",
     items: [
-      ["Velvet Chocolate Slice", "Dark chocolate ganache and berry compote.", "$8.00", "/desert1.jpg"],
+      ["Chocolate Cake Slice", "Soft chocolate cake with creamy frosting.", "$8.00", "/desert1.jpg"],
       ["Caramel Cream Tart", "Vanilla cream, caramel, and almond crumb.", "$9.00", "/desert2.jpg"],
-      ["Berry Pavlova", "Crisp meringue, cream, and fresh berries.", "$10.00", "/desert3.jpg"],
-      ["Lemon Cheesecake", "Citrus curd with a biscuit base.", "$8.00", "/desert4.jpg"],
-      ["Tiramisu Cup", "Espresso-soaked layers and mascarpone.", "$11.00", "/desert5.jpg"],
-      ["Honey Panna Cotta", "Silky panna cotta with roasted fruit.", "$9.00", "/desert6.jpg"],
+      ["Berry Cream Cup", "Fresh berries layered with cream and crunch.", "$10.00", "/desert3.jpg"],
+      ["Lemon Cheesecake", "Bright citrus cream on a biscuit base.", "$8.00", "/desert4.jpg"],
+      ["Sweet Cream Cup", "Chilled creamy layers with a coffee finish.", "$11.00", "/desert5.jpg"],
+      ["Honey Fruit Pudding", "Silky pudding topped with roasted fruit.", "$9.00", "/desert6.jpg"],
     ],
   },
   Drinks: {
     icon: "/drinks.svg",
     items: [
-      ["Signature Spritz", "Orange bitters, sparkling wine, and citrus.", "$7.00", "/drink1.jpg"],
+      ["Biggs Orange Fizz", "Orange, bubbles, and a bright citrus finish.", "$7.00", "/drink1.jpg"],
       ["Berry Cooler", "Mixed berries, mint, and soda.", "$6.00", "/drink2.jpg"],
-      ["Classic Mojito", "Lime, mint, cane sugar, and crushed ice.", "$8.00", "/drink3.jpg"],
+      ["Mint Lime Refresher", "Lime, mint, cane sugar, and crushed ice.", "$8.00", "/drink3.jpg"],
       ["Iced Citrus Tea", "Black tea, lemon, and honey syrup.", "$5.00", "/drink4.jpg"],
-      ["House Red", "Smooth red with dark fruit and spice.", "$12.00", "/drink5.jpg"],
+      ["Chapman Classic", "Fruity, fizzy, chilled, and full of color.", "$12.00", "/drink5.jpg"],
       ["Golden Mocktail", "Pineapple, ginger, lime, and tonic.", "$6.00", "/drink6.jpg"],
     ],
   },
 };
-
-const testimonials = [
-  ["Food has a culture, history, story, and relationships. Luxe Dining brings all of that to the table beautifully.", "Herman Miller"],
-  ["A lovely place with generous ambience and warm service. Every plate felt carefully made and memorable.", "Matthew Taylor"],
-  ["The desserts and presentation won my heart. We came for family dinner and left with a new favorite spot.", "Leonel Money"],
-];
-
-const blogCards = [
-  ["Never Eat More Than You Can Life.", "/blog-1.webp"],
-  ["Life Is Uncertain Important To Me.", "/blog-2.webp"],
-  ["Food Simply Is Not Important To Me.", "/blog-3.webp"],
-];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 28 },
@@ -110,7 +92,7 @@ export default function Home() {
       <Navbar isDark={isDark} onToggleDark={() => setIsDark((value) => !value)} />
 
       <section id="home" className="relative flex min-h-screen items-center justify-center overflow-hidden">
-        <img src="/hero-banner.webp" alt="Elegant restaurant table" className="absolute inset-0 h-full w-full object-cover" />
+        <img src="/hero-banner.webp" alt="Uncle Biggs restaurant table" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-black/60" />
         {/* <motion.img
           src="/hero-banner.webp"
@@ -132,13 +114,13 @@ export default function Home() {
             UNCLE BIGGS
           </p>
           <h1 className="mt-7 font-[var(--font-heading)] text-7xl uppercase leading-[0.9] text-stroke-white md:text-5xl lg:text-[4.5rem]">
-            Great Dining <span className="block text-white">Experience</span>
+            Big Flavor <span className="block text-white">Every Day</span>
           </h1>
           <a
-            href="#blog"
+            href="#menu"
             className="mt-9 inline-flex items-center gap-2 rounded-md bg-[#282725] px-6 py-3 font-[var(--font-alt)] text-sm font-bold uppercase text-white transition hover:bg-white hover:text-black"
           >
-            Authentic Experience
+            Explore Our Menu
             <BookOpen size={16} />
           </a>
         </motion.div>
@@ -146,7 +128,7 @@ export default function Home() {
 
       <section id="about" className="relative py-20 md:py-28">
         <h2 className="pointer-events-none text-center font-[var(--font-heading)] text-7xl uppercase mb-2 leading-none text-stone-500/20 md:text-[8rem] lg:text-[12rem]">
-          Experience
+          Welcome
         </h2>
         <img src="/about-2.png" alt="" className="absolute bottom-14 left-0 hidden w-24 md:block" style={{ animation: "float-soft 4s ease-in-out infinite" }} />
         <img src="/about-1.png" alt="" className="absolute right-0 top-20 hidden w-24 md:block" style={{ animation: "float-soft 4.5s ease-in-out infinite" }} />
@@ -160,7 +142,7 @@ export default function Home() {
             transition={{ duration: 0.7 }}
             className="flex justify-center"
           >
-            <img src="/about-image.webp" alt="Chef plating a dish" className="w-full max-w-lg rounded-lg object-cover " />
+            <img src="/about-image.webp" alt="Uncle Biggs meal being prepared" className="w-full max-w-lg rounded-lg object-cover " />
           </motion.div>
           <motion.div
             initial="hidden"
@@ -170,17 +152,17 @@ export default function Home() {
             transition={{ duration: 0.7, delay: 0.1 }}
             className="space-y-6 text-center md:text-left"
           >
-            <p className="font-[var(--font-alt)] text-sm font-bold uppercase tracking-wide text-red-600">Since 1988</p>
+            <p className="font-[var(--font-alt)] text-sm font-bold uppercase tracking-wide text-red-600">Made for everyday cravings</p>
             <h2 className="font-[var(--font-heading)] text-5xl uppercase leading-none md:text-6xl lg:text-7xl">
-              Wonderful Dining Experience & Food.
+              Good Food, Warm Service, Big Portions.
             </h2>
             <p className={`mx-auto max-w-2xl font-[var(--font-alt)] text-base leading-8 md:mx-0 ${isDark ? "text-stone-300" : "text-stone-500"}`}>
-              Discover the essence of <strong>Luxe Dining</strong>, where passion for cuisine meets timeless hospitality.
-              Since 1988, fresh ingredients, confident flavor, and warm service have shaped every plate.
+              Welcome to <strong>Uncle Biggs</strong>, a friendly restaurant built around the meals people love:
+              juicy chicken, burgers, rice plates, quick bites, refreshing drinks, and easy family moments.
             </p>
             <div className="flex flex-col items-center gap-4 sm:flex-row md:justify-start">
               <a href="#story" className="rounded-lg bg-stone-600 px-6 py-3 font-[var(--font-heading)] text-lg uppercase text-white transition hover:bg-stone-800">
-                About Restaurant
+                About Uncle Biggs
               </a>
               <a href="tel:1800222000" className="inline-flex items-center gap-2 font-[var(--font-alt)] font-semibold text-green-600">
                 <Phone size={18} />
@@ -193,8 +175,8 @@ export default function Home() {
         <div className="mx-auto mt-20 grid max-w-6xl gap-8 px-5 md:grid-cols-3">
           {[
             [Truck, "Fast Delivery", "Within 30 minutes"],
-            [Award, "Absolute Dining", "Best buffet restaurant"],
-            [ShoppingBag, "Pickup Delivery", "Grab your food order"],
+            [Award, "Fresh Favorites", "Comfort food done right"],
+            [ShoppingBag, "Easy Pickup", "Grab your meal on the go"],
           ].map(([Icon, title, text]) => (
             <motion.div
               key={title}
@@ -219,7 +201,7 @@ export default function Home() {
       <section id="menu" className="relative overflow-hidden py-20">
         <img src="/menu-hero.webp" alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />
         <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
-          <SectionTitle eyebrow="- Choose Delicious -" title="Popular Menu" />
+          <SectionTitle eyebrow="- Choose Delicious -" title="Uncle Biggs Menu" />
 
           <div className="mt-10 flex flex-wrap justify-center gap-5 md:gap-12">
             {Object.entries(categoryData).map(([category, data]) => (
@@ -259,8 +241,8 @@ export default function Home() {
           </AnimatePresence>
 
           <p className={`mt-12 text-center font-[var(--font-alt)] text-lg font-medium leading-8 ${isDark ? "text-stone-300" : "text-stone-500"}`}>
-            <span className="mr-2 rounded-lg bg-red-600 px-3 py-1 text-white">Masterchef</span>
-            Unique and delicious from the world&apos;s <span className="font-bold underline">best masterchefs.</span>
+            <span className="mr-2 rounded-lg bg-red-600 px-3 py-1 text-white">Fresh Daily</span>
+            Built for quick lunches, family dinners, and <span className="font-bold underline">serious cravings.</span>
           </p>
         </div>
       </section>
@@ -271,7 +253,7 @@ export default function Home() {
         <div className="flex w-max gap-14 whitespace-nowrap" style={{ animation: "marquee 24s linear infinite" }}>
           {[...Array(2)].map((_, index) => (
             <div key={index} className="flex gap-14">
-              {["Experience", "Cuisine", "Delicious", "Awesome", "Experience", "Delicious"].map((word, wordIndex) => (
+              {["Chicken", "Burgers", "Rice", "Drinks", "Family", "Flavor"].map((word, wordIndex) => (
                 <span
                   key={`${word}-${wordIndex}`}
                   className={`font-[var(--font-heading)] text-7xl uppercase leading-none md:text-[9rem] ${wordIndex % 2 === 0 ? "text-stroke-gold" : isDark ? "text-stone-100" : "text-stone-800"

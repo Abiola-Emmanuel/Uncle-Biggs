@@ -3,9 +3,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, Moon, Sun, X } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const navItems = ["About", "Menu", "Contact"];
+const navItems = [
+  { id: 1, name: 'Home', link: '/' },
+  { id: 2, name: 'About', link: '/about' },
+  { id: 3, name: 'Menu', link: '/menu' },
+  { id: 4, name: 'Contact', link: '/contact' }
+
+];
 
 export default function Navbar({ isDark, onToggleDark }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -24,31 +31,30 @@ export default function Navbar({ isDark, onToggleDark }) {
   return (
     <>
       <header
-        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
-          scrolled ? "bg-white shadow-lg shadow-black/10" : "bg-transparent"
-        }`}
+        className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${scrolled ? "bg-white shadow-lg shadow-black/10" : "bg-transparent"
+          }`}
       >
         <nav className="mx-auto flex max-w-7xl items-center justify-between px-5 py-4 lg:px-8">
-          <a href="#home" aria-label="Luxe Dining home">
+          <Link href="/" aria-label="Uncle Biggs home">
             <Image
-              src="/hero-banner.webp"
+              src="/logo.svg"
               width={50}
               height={50}
-              alt="Luxe Dining"
+              alt="Uncle Biggs"
               className="rounded-full"
               priority
             />
-          </a>
+          </Link>
 
           <div className="hidden items-center gap-7 lg:flex">
             {navItems.map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+              <Link
+                key={item.id}
+                href={item.link}
                 className={`relative font-[var(--font-main)] text-sm font-semibold uppercase transition after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-0 after:transition-all after:duration-300 hover:-translate-y-0.5 hover:after:w-full ${linkColor}`}
               >
-                {item}
-              </a>
+                {item.name}
+              </Link>
             ))}
           </div>
 
@@ -57,9 +63,8 @@ export default function Navbar({ isDark, onToggleDark }) {
               type="button"
               aria-label="Toggle dark mode"
               onClick={onToggleDark}
-              className={`grid size-11 place-items-center rounded-full transition hover:scale-105 ${
-                scrolled ? "bg-stone-950 text-white hover:bg-[#fc791a]" : "bg-white text-stone-800 hover:bg-neutral-950 hover:text-white"
-              }`}
+              className={`grid size-11 place-items-center rounded-full transition hover:scale-105 ${scrolled ? "bg-stone-950 text-white hover:bg-[#fc791a]" : "bg-white text-stone-800 hover:bg-neutral-950 hover:text-white"
+                }`}
             >
               {isDark ? <Sun size={18} /> : <Moon size={18} />}
             </button>
@@ -93,14 +98,14 @@ export default function Navbar({ isDark, onToggleDark }) {
               <X />
             </button>
             {navItems.map((item) => (
-              <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+              <Link
+                key={item.id}
+                href={item.link}
                 onClick={() => setIsMenuOpen(false)}
                 className="font-[var(--font-main)] text-xl font-bold uppercase tracking-wide transition hover:scale-110 hover:text-[#fc791a]"
               >
-                {item}
-              </a>
+                {item.name}
+              </Link>
             ))}
           </motion.div>
         )}

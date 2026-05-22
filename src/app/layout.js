@@ -1,8 +1,8 @@
 import "./globals.css";
 
 export const metadata = {
-  title: "Luxe Dining",
-  description: "A refined restaurant homepage for Luxe Dining.",
+  title: "Uncle Biggs",
+  description: "A warm restaurant website for Uncle Biggs, serving bold comfort food, family meals, and everyday favorites.",
 };
 
 export default function RootLayout({ children }) {

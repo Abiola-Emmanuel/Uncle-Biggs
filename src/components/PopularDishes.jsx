@@ -9,11 +9,11 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 
 const popularDishes = [
-  ["Chicken Breast Burger", "Tomatoes, Parmesan, Basil", "$3.20", "/popular-1.webp"],
-  ["Golden Chicken Plate", "Tomatoes, Parmesan, Basil", "$6.64", "/popular-2.webp"],
-  ["Medium Spicy Chips", "Cheese, Capsicum, Pancer", "$5.45", "/popular-3.webp"],
-  ["Appeteaser Platter", "Cucumber, Mushroom, Basil", "$9.50", "/popular-4.webp"],
-  ["Crispy House Burger", "Tomatoes, Parmesan, Basil", "$12.85", "/popular-5.webp"],
+  ["Biggs Chicken Burger", "Crispy chicken, fresh tomato, house sauce", "$3.20", "/popular-1.webp"],
+  ["Golden Chicken Meal", "Juicy chicken, fries, and a bright side salad", "$6.64", "/popular-2.webp"],
+  ["Loaded Spicy Chips", "Hot chips, cheese, peppers, and Biggs seasoning", "$5.45", "/popular-3.webp"],
+  ["Family Appeteaser Platter", "Bites, dips, vegetables, and shareable crunch", "$9.50", "/popular-4.webp"],
+  ["Classic House Burger", "Grilled patty, lettuce, tomato, and creamy sauce", "$12.85", "/popular-5.webp"],
 ];
 
 const fadeUp = {
@@ -25,7 +25,7 @@ export default function PopularDishes({ isDark }) {
   return (
     <section id="gallery" className="py-20">
       <div className="mx-auto max-w-7xl px-5 lg:px-8">
-        <SectionTitle eyebrow="- Specials Choice -" title="Popular Dishes" />
+        <SectionTitle eyebrow="- Customer Favorites -" title="Popular Dishes" />
 
         <div className="relative mt-10">
           <Swiper
