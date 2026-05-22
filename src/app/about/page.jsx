@@ -53,10 +53,9 @@ export default function About() {
     <main className={`min-h-screen overflow-hidden transition-colors duration-500 ${theme}`}>
       <Navbar isDark={isDark} onToggleDark={() => setIsDark((value) => !value)} />
 
-      <section className="relative flex min-h-[82vh] items-center overflow-hidden px-5 pb-16 pt-32">
+      <section className="relative flex h-[100vh] items-center overflow-hidden px-5 pb-16 pt-32">
         <img src="/hero-bg2.jpg" alt="Uncle Biggs food spread" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-black/65" />
-        <img src="/leaf.png" alt="" className="absolute left-6 top-28 hidden w-16 opacity-80 md:block" style={{ animation: "float-soft 4s ease-in-out infinite" }} />
         <motion.div
           initial="hidden"
           animate="visible"
@@ -68,7 +67,7 @@ export default function About() {
             <p className="font-[var(--font-alt)] text-sm font-bold uppercase tracking-wide text-[#fc791a]">
               About Uncle Biggs
             </p>
-            <h1 className="mt-5 font-[var(--font-heading)] text-7xl uppercase leading-[0.9] text-stroke-white md:text-8xl lg:text-[8.5rem]">
+            <h1 className="mt-5 font-[var(--font-heading)] text-7xl uppercase leading-[0.9] text-stroke-white md:text-7xl lg:text-[7.5rem]">
               Food That Feels <span className="block text-white">Like Home</span>
             </h1>
             <p className="mt-7 max-w-2xl font-[var(--font-alt)] text-base leading-8 text-stone-200 md:text-lg">
@@ -95,9 +94,9 @@ export default function About() {
       </section>
 
       <section className="relative py-20 md:py-28">
-        <h2 className="pointer-events-none text-center font-[var(--font-heading)] text-7xl uppercase leading-none text-stone-500/20 md:text-[8rem] lg:text-[12rem]">
+        {/* <h2 className="pointer-events-none text-center font-[var(--font-heading)] text-7xl uppercase leading-none text-stone-500/20 md:text-[8rem] lg:text-[12rem]">
           Our Story
-        </h2>
+        </h2> */}
 
         <div className="mx-auto -mt-2 grid max-w-7xl gap-14 px-5 md:grid-cols-2 md:items-center lg:px-8">
           <motion.div

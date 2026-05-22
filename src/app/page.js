@@ -118,7 +118,7 @@ export default function Home() {
           </h1>
           <a
             href="#menu"
-            className="mt-9 inline-flex items-center gap-2 rounded-md bg-[#282725] px-6 py-3 font-[var(--font-alt)] text-sm font-bold uppercase text-white transition hover:bg-white hover:text-black"
+            className="mt-9 inline-flex items-center gap-2 rounded-full bg-[#282725] px-6 py-3 font-[var(--font-alt)] text-sm font-semibold uppercase text-white transition hover:bg-white hover:text-black"
           >
             Explore Our Menu
             <BookOpen size={16} />
@@ -142,7 +142,7 @@ export default function Home() {
             transition={{ duration: 0.7 }}
             className="flex justify-center"
           >
-            <img src="/about-image.webp" alt="Uncle Biggs meal being prepared" className="w-full max-w-lg rounded-lg object-cover " />
+            <img src="/hero-pizza.png" alt="Uncle Biggs meal being prepared" className="w-full max-w-lg rounded-lg object-cover " />
           </motion.div>
           <motion.div
             initial="hidden"
@@ -161,7 +161,7 @@ export default function Home() {
               juicy chicken, burgers, rice plates, quick bites, refreshing drinks, and easy family moments.
             </p>
             <div className="flex flex-col items-center gap-4 sm:flex-row md:justify-start">
-              <a href="#story" className="rounded-lg bg-stone-600 px-6 py-3 font-[var(--font-heading)] text-lg uppercase text-white transition hover:bg-stone-800">
+              <a href="#story" className="rounded-full bg-stone-600 px-6 py-3 font-[var(--font-heading)] text-sm uppercase text-white transition hover:bg-stone-800">
                 About Uncle Biggs
               </a>
               <a href="tel:1800222000" className="inline-flex items-center gap-2 font-[var(--font-alt)] font-semibold text-green-600">
