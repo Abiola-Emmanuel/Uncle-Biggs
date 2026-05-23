@@ -53,6 +53,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 @keyframes float-soft {
+
   0%,
   100% {
     transform: translateY(0) rotate(0deg);

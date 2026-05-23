@@ -1,262 +1,336 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  Aperture,
-  Award,
-  BookOpen,
-  CircleDot,
-  Phone,
-  ShoppingBag,
-  Truck,
-  Wifi,
+  BookOpen, Phone, Truck, Award, ShoppingBag, ChevronDown, ArrowRight, Star,
+  Utensils, Flame, GlassWater, Leaf, Sandwich,
 } from "lucide-react";
-import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import Navbar from "@/components/Navbar";
-import PopularDishes from "@/components/PopularDishes";
 import Footer from "@/components/Footer";
 
+// --- Data ---
 const categoryData = {
-  "Main Course": {
-    icon: "/starters.svg",
+  "Big Meals": {
+    icon: Utensils,
     items: [
-      ["Biggs Jollof Rice", "Smoky party-style rice served with chicken and slaw.", "$12.00", "/expensive1.jpg"],
-      ["Grilled Chicken Plate", "Flame-grilled chicken with fries and house pepper sauce.", "$22.00", "/expensive2.jpg"],
-      ["Crispy Fish Meal", "Golden fish fillet with fresh greens and lemon dressing.", "$15.00", "/expensive3.jpg"],
-      ["Big Beef Burger", "Juicy beef patty, cheese, lettuce, and Uncle Biggs sauce.", "$22.00", "/expensive4.jpg"],
-      ["Spicy Chicken Pasta", "Creamy pasta tossed with grilled chicken and peppers.", "$42.00", "/expensive5.jpg"],
-      ["Family Rice Combo", "Rice, chicken, plantain, salad, and chilled drinks.", "$32.00", "/expensive6.jpg"],
+      ["Biggs Jollof Rice", "Smoky party-style rice, chicken & slaw.", "$12.00", "/expensive1.jpg", "Bestseller"],
+      ["Grilled Chicken Plate", "Flame-grilled chicken with fries & pepper sauce.", "$22.00", "/expensive2.jpg", "Hot"],
+      ["Crispy Fish Meal", "Golden fish fillet with greens & lemon dressing.", "$15.00", "/expensive3.jpg", "Fresh"],
+      ["Family Rice Combo", "Rice, chicken, plantain, salad & drinks.", "$32.00", "/expensive6.jpg", "Shareable"],
     ],
   },
-  Starters: {
-    icon: "/nonvage.svg",
+  Burgers: {
+    icon: Sandwich,
     items: [
-      ["Crispy Chicken Bites", "Crunchy chicken pieces with a creamy pepper dip.", "$9.00", "/foods-1.webp"],
-      ["Mini Meat Pies", "Warm pastry pockets packed with seasoned filling.", "$11.00", "/foods-2.webp"],
-      ["Peppered Beef Skewers", "Tender beef bites finished with onions and spice.", "$16.00", "/foods-3.webp"],
-      ["Plantain Cups", "Sweet fried plantain served with a fresh tomato salsa.", "$14.00", "/foods-4.webp"],
-      ["Spiced Chicken Wings", "Sticky wings tossed in Uncle Biggs hot sauce.", "$10.00", "/foods-5.webp"],
-      ["Snack Box", "A shareable mix of fries, bites, dips, and crunch.", "$18.00", "/foods-6.webp"],
+      ["Big Beef Burger", "Juicy beef patty, cheese, lettuce & Biggs sauce.", "$22.00", "/expensive4.jpg", "Signature"],
+      ["Crispy Chicken Burger", "Crunchy fillet, pickles & creamy sauce.", "$13.00", "/hero-burger.png", "Popular"],
+      ["Double Stack Burger", "Two patties, cheese, onions & house relish.", "$18.00", "/popular-1.webp", "Filling"],
+      ["Veggie Crunch Burger", "Crispy veggie patty, slaw & pepper mayo.", "$11.00", "/popular-2.webp", "Veggie"],
     ],
   },
-  Vegetarian: {
-    icon: "/vegetarian.svg",
+  "Snacks & Sides": {
+    icon: Flame,
     items: [
-      ["Fresh Garden Salad", "Leafy greens, avocado, sweet corn, and house dressing.", "$10.00", "/salad2.jpg"],
-      ["Roasted Pepper Bowl", "Sweet peppers, grains, feta, and herbed oil.", "$13.00", "/salad3.jpg"],
-      ["Creamy Mushroom Pasta", "Mushroom sauce, herbs, and a little pepper kick.", "$18.00", "/salad5.jpg"],
-      ["Vegetable Rice Plate", "Seasoned rice with grilled vegetables and sauce.", "$16.00", "/salad6.jpg"],
-      ["Citrus Couscous Salad", "Herbs, raisins, chickpeas, and lemon dressing.", "$12.00", "/salad7.jpg"],
-      ["Cheesy Tomato Flatbread", "Tomato, mozzarella, basil, and chili honey.", "$15.00", "/hero-pizza.png"],
+      ["Crispy Chicken Bites", "Crunchy chicken with pepper dip.", "$9.00", "/foods-1.webp", "Snack"],
+      ["Loaded Spicy Chips", "Hot chips, cheese, peppers & seasoning.", "$5.45", "/foods-2.webp", "Spicy"],
+      ["Mini Meat Pies", "Warm pastry pockets with seasoned filling.", "$11.00", "/foods-3.webp", "Classic"],
+      ["Plantain Cups", "Sweet plantain with tomato salsa.", "$14.00", "/foods-4.webp", "Sweet"],
     ],
   },
-  Dessert: {
-    icon: "/dessert.svg",
+  "Fresh Picks": {
+    icon: Leaf,
     items: [
-      ["Chocolate Cake Slice", "Soft chocolate cake with creamy frosting.", "$8.00", "/desert1.jpg"],
-      ["Caramel Cream Tart", "Vanilla cream, caramel, and almond crumb.", "$9.00", "/desert2.jpg"],
-      ["Berry Cream Cup", "Fresh berries layered with cream and crunch.", "$10.00", "/desert3.jpg"],
-      ["Lemon Cheesecake", "Bright citrus cream on a biscuit base.", "$8.00", "/desert4.jpg"],
-      ["Sweet Cream Cup", "Chilled creamy layers with a coffee finish.", "$11.00", "/desert5.jpg"],
-      ["Honey Fruit Pudding", "Silky pudding topped with roasted fruit.", "$9.00", "/desert6.jpg"],
+      ["Fresh Garden Salad", "Greens, avocado, corn & house dressing.", "$10.00", "/salad2.jpg", "Light"],
+      ["Vegetable Rice Plate", "Rice with grilled vegetables & sauce.", "$16.00", "/salad6.jpg", "Veggie"],
+      ["Creamy Mushroom Pasta", "Mushroom sauce, herbs & pepper.", "$18.00", "/salad5.jpg", "Comfort"],
+      ["Cheesy Tomato Flatbread", "Tomato, mozzarella, basil & honey.", "$15.00", "/hero-pizza.png", "Cheesy"],
     ],
   },
   Drinks: {
-    icon: "/drinks.svg",
+    icon: GlassWater,
     items: [
-      ["Biggs Orange Fizz", "Orange, bubbles, and a bright citrus finish.", "$7.00", "/drink1.jpg"],
-      ["Berry Cooler", "Mixed berries, mint, and soda.", "$6.00", "/drink2.jpg"],
-      ["Mint Lime Refresher", "Lime, mint, cane sugar, and crushed ice.", "$8.00", "/drink3.jpg"],
-      ["Iced Citrus Tea", "Black tea, lemon, and honey syrup.", "$5.00", "/drink4.jpg"],
-      ["Chapman Classic", "Fruity, fizzy, chilled, and full of color.", "$12.00", "/drink5.jpg"],
-      ["Golden Mocktail", "Pineapple, ginger, lime, and tonic.", "$6.00", "/drink6.jpg"],
+      ["Chapman Classic", "Fruity, fizzy & full of color.", "$12.00", "/drink5.jpg", "House"],
+      ["Biggs Orange Fizz", "Orange & bright citrus finish.", "$7.00", "/drink1.jpg", "Bright"],
+      ["Mint Lime Refresher", "Lime, mint & crushed ice.", "$8.00", "/drink3.jpg", "Cool"],
+      ["Berry Cooler", "Mixed berries, mint & soda.", "$6.00", "/drink2.jpg", "Sweet"],
     ],
   },
 };
 
+const combos = [
+  ["Lunch Power Box", "Jollof rice, chicken bites, plantain & drink.", "$19.00", "/popular-2.webp"],
+  ["Biggs Burger Duo", "Two burgers, loaded chips & two drinks.", "$29.00", "/popular-1.webp"],
+  ["Family Feast Tray", "Rice combo, chicken, wings & drinks.", "$46.00", "/expensive6.jpg"],
+];
+
+// --- Animation Variants ---
 const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.1 } },
 };
 
 export default function Home() {
   const [isDark, setIsDark] = useState(false);
-  const [activeCategory, setActiveCategory] = useState("Main Course");
+  const [activeCategory, setActiveCategory] = useState("Big Meals");
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 20);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const theme = isDark
     ? "bg-neutral-950 text-stone-100"
-    : "bg-[#f8f6f2] text-[#383632]";
+    : "bg-stone-50 text-stone-900";
 
   return (
-    <main className={`min-h-screen overflow-hidden transition-colors duration-500 ${theme}`}>
-      <Navbar isDark={isDark} onToggleDark={() => setIsDark((value) => !value)} />
+    <main className={`min-h-screen overflow-hidden transition-colors duration-700 ${theme} font-body`}>
+      {/* --- Navbar --- */}
+      <Navbar isDark={isDark} onToggleDark={() => setIsDark(!isDark)} scrolled={scrolled} />
 
-      <section id="home" className="relative flex min-h-screen items-center justify-center overflow-hidden">
-        <img src="/hero-banner.webp" alt="Uncle Biggs restaurant table" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-black/60" />
-        {/* <motion.img
-          src="/hero-banner.webp"
-          alt=""
-          initial={{ opacity: 0, scale: 0.92, rotate: -4 }}
-          animate={{ opacity: 0.92, scale: 1, rotate: 0 }}
-          transition={{ duration: 1 }}
-          className="absolute bottom-10 right-3 hidden w-64 opacity-90 drop-shadow-2xl md:block lg:right-16 lg:w-96"
-          style={{ animation: "float-soft 5s ease-in-out infinite" }}
-        /> */}
+      {/* --- Hero Section --- */}
+      <section id="home" className="relative flex h-screen items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero-banner.webp"
+            alt="Uncle Biggs food"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-[2px]" />
+        </div>
+
         <motion.div
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          transition={{ duration: 0.8 }}
-          className="relative z-10 mx-auto flex max-w-5xl flex-col items-center px-5 pt-20 text-center"
+          className="relative z-10 mx-auto max-w-7xl px-5 pt-20 text-center"
         >
-          <p className="font-[var(--font-heading)] text-2xl uppercase leading-8 text-white md:text-xl">
-            UNCLE BIGGS
-          </p>
-          <h1 className="mt-7 font-[var(--font-heading)] text-7xl uppercase leading-[0.9] text-stroke-white md:text-5xl lg:text-[4.5rem]">
-            Big Flavor <span className="block text-white">Every Day</span>
-          </h1>
-          <a
-            href="#menu"
-            className="mt-9 inline-flex items-center gap-2 rounded-full bg-[#282725] px-6 py-3 font-[var(--font-alt)] text-sm font-semibold uppercase text-white transition hover:bg-white hover:text-black"
+          <motion.p
+            variants={fadeUp}
+            className="font-display text-2xl uppercase tracking-[0.3em] text-[#fc791a] md:text-3xl"
           >
-            Explore Our Menu
-            <BookOpen size={16} />
-          </a>
+            Uncle Biggs
+          </motion.p>
+          <motion.h1
+            variants={fadeUp}
+            className="mt-6 font-display text-7xl uppercase leading-[0.85] text-white md:text-8xl lg:text-[10rem]"
+          >
+            Big Flavor <br />
+            <span className="text-stroke-orange">Every Day</span>
+          </motion.h1>
+          <motion.div variants={fadeUp} className="mt-10 flex flex-col items-center justify-center gap-5 sm:flex-row">
+            <Link
+              href="#menu"
+              className="group inline-flex items-center gap-2 rounded-full bg-[#fc791a] px-8 py-4 font-display text-xl uppercase text-white transition-all hover:bg-white hover:text-black hover:shadow-xl hover:shadow-orange-500/25"
+            >
+              Explore Our Menu
+              <BookOpen size={20} className="transition-transform group-hover:rotate-12" />
+            </Link>
+            <a
+              href="tel:1800222000"
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-8 py-4 font-display text-xl uppercase text-white backdrop-blur-md transition-all hover:bg-white hover:text-black"
+            >
+              <Phone size={20} />
+              Order Now
+            </a>
+          </motion.div>
+        </motion.div>
+        <motion.div
+          animate={{ y: [0, 15, 0] }}
+          transition={{ repeat: Infinity, duration: 3 }}
+          className="absolute bottom-10 left-1/2 z-10 -translate-x-1/2 text-white/60"
+        >
+          <ChevronDown size={36} />
         </motion.div>
       </section>
 
-      <section id="about" className="relative py-20 md:py-28">
-        <h2 className="pointer-events-none text-center font-[var(--font-heading)] text-7xl uppercase mb-2 leading-none text-stone-500/20 md:text-[8rem] lg:text-[12rem]">
-          Welcome
-        </h2>
-        <img src="/about-2.png" alt="" className="absolute bottom-14 left-0 hidden w-24 md:block" style={{ animation: "float-soft 4s ease-in-out infinite" }} />
-        <img src="/about-1.png" alt="" className="absolute right-0 top-20 hidden w-24 md:block" style={{ animation: "float-soft 4.5s ease-in-out infinite" }} />
+      {/* --- Welcome Section (Bento Grid) --- */}
+      <section id="about" className="relative overflow-hidden py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="mb-16 text-center">
+            <p className="font-body text-sm font-bold uppercase tracking-widest text-[#fc791a]">Made for everyday cravings</p>
+            <h2 className="mt-4 font-display text-6xl uppercase leading-none md:text-8xl">Good Food, Big Portions.</h2>
+          </div>
 
-        <div className="mx-auto -mt-4 grid max-w-7xl gap-20 px-5 mt-4 md:grid-cols-2 md:items-center lg:px-8">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.25 }}
-            variants={fadeUp}
-            transition={{ duration: 0.7 }}
-            className="flex justify-center"
-          >
-            <img src="/hero-pizza.png" alt="Uncle Biggs meal being prepared" className="w-full max-w-lg rounded-lg object-cover " />
-          </motion.div>
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.25 }}
-            variants={fadeUp}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="space-y-6 text-center md:text-left"
-          >
-            <p className="font-[var(--font-alt)] text-sm font-bold uppercase tracking-wide text-red-600">Made for everyday cravings</p>
-            <h2 className="font-[var(--font-heading)] text-5xl uppercase leading-none md:text-6xl lg:text-7xl">
-              Good Food, Warm Service, Big Portions.
-            </h2>
-            <p className={`mx-auto max-w-2xl font-[var(--font-alt)] text-base leading-8 md:mx-0 ${isDark ? "text-stone-300" : "text-stone-500"}`}>
-              Welcome to <strong>Uncle Biggs</strong>, a friendly restaurant built around the meals people love:
-              juicy chicken, burgers, rice plates, quick bites, refreshing drinks, and easy family moments.
-            </p>
-            <div className="flex flex-col items-center gap-4 sm:flex-row md:justify-start">
-              <a href="#story" className="rounded-full bg-stone-600 px-6 py-3 font-[var(--font-heading)] text-sm uppercase text-white transition hover:bg-stone-800">
-                About Uncle Biggs
-              </a>
-              <a href="tel:1800222000" className="inline-flex items-center gap-2 font-[var(--font-alt)] font-semibold text-green-600">
-                <Phone size={18} />
-                1-800-222-000
-              </a>
-            </div>
-          </motion.div>
-        </div>
-
-        <div className="mx-auto mt-20 grid max-w-6xl gap-8 px-5 md:grid-cols-3">
-          {[
-            [Truck, "Fast Delivery", "Within 30 minutes"],
-            [Award, "Fresh Favorites", "Comfort food done right"],
-            [ShoppingBag, "Easy Pickup", "Grab your meal on the go"],
-          ].map(([Icon, title, text]) => (
+          <div className="grid gap-6 md:grid-cols-3 md:grid-rows-2">
             <motion.div
-              key={title}
               initial="hidden"
               whileInView="visible"
-              viewport={{ once: true, amount: 0.4 }}
+              viewport={{ once: true }}
               variants={fadeUp}
-              className="flex flex-col items-center gap-4 text-center sm:flex-row sm:text-left md:justify-center"
+              className="group relative overflow-hidden rounded-2xl bg-stone-200 md:col-span-2 md:row-span-2"
             >
-              <span className="grid size-16 shrink-0 place-items-center rounded-full bg-white text-[#fc791a] shadow-lg shadow-black/15 transition hover:scale-105">
-                <Icon size={28} />
-              </span>
-              <span>
-                <p className="font-[var(--font-heading)] text-3xl uppercase leading-none">{title}</p>
-                <p className={`font-[var(--font-alt)] ${isDark ? "text-stone-400" : "text-stone-500"}`}>{text}</p>
-              </span>
+              <Image
+                src="/hero-pizza.png"
+                alt="Uncle Biggs meal"
+                fill
+                sizes="(min-width: 768px) 66vw, 100vw"
+                className="object-cover transition-transform duration-700 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent p-8 flex flex-col justify-end">
+                <p className="font-display text-3xl uppercase text-white md:text-5xl">Our Story</p>
+                <p className="mt-2 text-sm text-stone-200 md:text-base">Where everyday hunger meets big flavor, warm service, and portions that feel like home.</p>
+              </div>
             </motion.div>
-          ))}
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="flex flex-col items-center justify-center rounded-2xl bg-[#fc791a] p-8 text-center text-white shadow-xl shadow-orange-500/20"
+            >
+              <Truck size={40} className="mb-4" />
+              <p className="font-display text-3xl uppercase">Fast Delivery</p>
+              <p className="mt-2 text-sm text-white/80">Within 30 minutes</p>
+            </motion.div>
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+              className="flex flex-col items-center justify-center rounded-2xl bg-stone-800 p-8 text-center text-white shadow-xl shadow-stone-800/20"
+            >
+              <Award size={40} className="mb-4" />
+              <p className="font-display text-3xl uppercase">Fresh Favorites</p>
+              <p className="mt-2 text-sm text-stone-300">Comfort food done right</p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
-      <section id="menu" className="relative overflow-hidden py-20">
-        <img src="/menu-hero.webp" alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />
-        <div className="relative mx-auto max-w-7xl px-5 lg:px-8">
+      {/* --- Menu Section --- */}
+      <section id="menu" className="relative overflow-hidden bg-white py-24 md:py-32">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
           <SectionTitle eyebrow="- Choose Delicious -" title="Uncle Biggs Menu" />
 
-          <div className="mt-10 flex flex-wrap justify-center gap-5 md:gap-12">
+          {/* Category Tabs */}
+          <div className="mt-12 flex flex-wrap justify-center gap-4 md:gap-8">
             {Object.entries(categoryData).map(([category, data]) => (
               <button
                 key={category}
-                type="button"
                 onClick={() => setActiveCategory(category)}
-                className={`group flex min-w-28 flex-col items-center gap-2 border-b px-2 pb-3 font-[var(--font-alt)] text-sm font-semibold transition ${activeCategory === category ? "border-[#a5710a] text-[#a5710a]" : "border-transparent hover:border-[#a5710a] hover:text-[#a5710a]"
+                className={`group flex flex-col items-center gap-2 font-body text-sm font-semibold uppercase transition-all ${activeCategory === category
+                    ? "text-[#fc791a] scale-110"
+                    : "text-stone-400 hover:text-stone-700"
                   }`}
               >
-                <img src={data.icon} alt="" className="size-12 object-contain transition group-hover:-translate-y-1" />
+                <data.icon size={28} />
                 {category}
+                {activeCategory === category && (
+                  <motion.div layoutId="activeTab" className="h-1 w-full bg-[#fc791a] rounded-full" />
+                )}
               </button>
             ))}
           </div>
 
+          {/* Menu Grid */}
           <AnimatePresence mode="wait">
             <motion.div
               key={activeCategory}
-              initial={{ opacity: 0, y: 18 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -18 }}
-              transition={{ duration: 0.25 }}
-              className="mx-auto mt-12 grid max-w-6xl gap-x-12 gap-y-5 md:grid-cols-2"
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="mt-16 grid gap-8 md:grid-cols-2"
             >
-              {categoryData[activeCategory].items.map(([title, desc, price, image]) => (
-                <article key={title} className="group flex flex-col items-center gap-4 rounded-lg p-3 text-center transition hover:bg-white/60 hover:shadow-lg hover:shadow-black/5 sm:flex-row sm:text-left">
-                  <img src={image} alt={title} className="size-28 rounded-full object-cover" />
-                  <div className="min-w-0 flex-1">
-                    <h3 className="font-[var(--font-alt)] text-lg font-bold">{title}</h3>
-                    <p className={`mt-1 font-[var(--font-alt)] leading-7 ${isDark ? "text-stone-400" : "text-stone-500"}`}>{desc}</p>
+              {categoryData[activeCategory].items.map(([title, desc, price, image, tag]) => (
+                <motion.article
+                  key={title}
+                  variants={stagger}
+                  className="group flex flex-col items-center gap-6 rounded-2xl p-4 text-center transition-all hover:bg-stone-50 hover:shadow-xl hover:shadow-stone-200/50 sm:flex-row sm:text-left"
+                >
+                  <div className="relative h-28 w-28 flex-shrink-0 overflow-hidden rounded-full shadow-lg">
+                    <Image
+                      src={image}
+                      alt={title}
+                      fill
+                      sizes="112px"
+                      className="object-cover transition-transform duration-500 group-hover:scale-110"
+                    />
+                    {tag && (
+                      <span className="absolute -top-2 -right-2 rounded-full bg-[#fc791a] px-2 py-0.5 font-body text-xs font-bold uppercase text-white shadow">
+                        {tag}
+                      </span>
+                    )}
                   </div>
-                  <p className="font-[var(--font-alt)] text-lg font-bold">{price}</p>
-                </article>
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-display text-2xl uppercase leading-tight">{title}</h3>
+                    <p className="mt-1 font-body text-sm leading-relaxed text-stone-500">{desc}</p>
+                  </div>
+                  <p className="font-display text-2xl text-[#fc791a]">{price}</p>
+                </motion.article>
               ))}
             </motion.div>
           </AnimatePresence>
 
-          <p className={`mt-12 text-center font-[var(--font-alt)] text-lg font-medium leading-8 ${isDark ? "text-stone-300" : "text-stone-500"}`}>
-            <span className="mr-2 rounded-lg bg-red-600 px-3 py-1 text-white">Fresh Daily</span>
-            Built for quick lunches, family dinners, and <span className="font-bold underline">serious cravings.</span>
-          </p>
+          <div className="mt-12 text-center">
+            <p className="inline-block rounded-full bg-stone-100 px-6 py-2 font-body text-sm font-medium text-stone-600">
+              <span className="mr-2 text-[#fc791a]">★</span> Fresh Daily — Built for quick lunches & family dinners
+            </p>
+          </div>
         </div>
       </section>
 
-      <PopularDishes isDark={isDark} />
+      {/* --- Combos Section --- */}
+      <section className="py-24 bg-stone-50">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <SectionTitle eyebrow="- Value Packs -" title="Uncle Biggs Combos" />
+          <div className="mt-16 grid gap-8 md:grid-cols-3">
+            {combos.map(([title, desc, price, image], i) => (
+              <motion.div
+                key={title}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true }}
+                variants={fadeUp}
+                custom={i}
+                className="group relative overflow-hidden rounded-2xl bg-white shadow-lg shadow-stone-200/50 transition-all hover:shadow-xl hover:shadow-stone-300/50"
+              >
+                <div className="relative h-64 overflow-hidden">
+                  <Image
+                    src={image}
+                    alt={title}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                  <div className="absolute top-4 right-4 rounded-full bg-[#fc791a] px-3 py-1 font-display text-lg uppercase text-white shadow">
+                    {price}
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-display text-3xl uppercase leading-none">{title}</h3>
+                  <p className="mt-3 font-body text-sm leading-relaxed text-stone-500">{desc}</p>
+                  <Link href="#" className="mt-5 inline-flex items-center gap-2 font-body text-sm font-bold text-[#fc791a] hover:underline">
+                    Order Combo <ArrowRight size={16} />
+                  </Link>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
-      <section className="overflow-hidden py-8">
+      {/* --- Marquee --- */}
+      <section className="overflow-hidden border-y border-stone-200 py-8">
         <div className="flex w-max gap-14 whitespace-nowrap" style={{ animation: "marquee 24s linear infinite" }}>
-          {[...Array(2)].map((_, index) => (
-            <div key={index} className="flex gap-14">
-              {["Chicken", "Burgers", "Rice", "Drinks", "Family", "Flavor"].map((word, wordIndex) => (
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="flex gap-14">
+              {["Chicken", "Burgers", "Rice", "Drinks", "Family", "Flavor"].map((word, idx) => (
                 <span
-                  key={`${word}-${wordIndex}`}
-                  className={`font-[var(--font-heading)] text-7xl uppercase leading-none md:text-[9rem] ${wordIndex % 2 === 0 ? "text-stroke-gold" : isDark ? "text-stone-100" : "text-stone-800"
+                  key={`${word}-${idx}`}
+                  className={`font-display text-7xl uppercase leading-none md:text-[9rem] ${idx % 2 === 0 ? "text-stroke-orange" : "text-stone-800"
                     }`}
                 >
                   {word}
@@ -267,93 +341,17 @@ export default function Home() {
         </div>
       </section>
 
-      {/* <section id="story" className={`relative my-12 flex min-h-[520px] flex-col items-center justify-center overflow-hidden px-5 py-20 text-center ${isDark ? "bg-neutral-900" : "bg-[#faf6f3]"}`}>
-        <img src="/plate1.webp" alt="" className="absolute bottom-8 left-0 hidden w-44 md:block" />
-        <img src="/plate2.webp" alt="" className="absolute right-2 top-14 hidden w-44 md:block" />
-        <div className="mx-auto max-w-4xl">
-          <ChefHat className="mx-auto mb-8 text-[#fc791a]" size={42} />
-          <div className="grid gap-8 md:grid-cols-3">
-            {testimonials.map(([quote, name]) => (
-              <motion.figure
-                key={name}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeUp}
-                className="flex flex-col items-center justify-between gap-5"
-              >
-                <blockquote className="font-[var(--font-heading)] text-3xl uppercase leading-9">{quote}</blockquote>
-                <figcaption className="font-[var(--font-alt)] text-lg font-semibold capitalize text-[#d39121]">{name}</figcaption>
-              </motion.figure>
-            ))}
-          </div>
-          <div className="mt-10 flex justify-center gap-6">
-            {["/food-lover-1.webp", "/food-lover-2.webp", "/food-lover-3.webp"].map((image, index) => (
-              <img key={image} src={image} alt={`Happy food lover ${index + 1}`} className="size-16 rounded-full grayscale transition hover:scale-110 hover:grayscale-0" />
-            ))}
-          </div>
-        </div>
-        <div className="absolute -bottom-8 mx-auto flex w-[90%] max-w-2xl flex-col items-center justify-center gap-2 rounded-2xl bg-white px-5 py-4 text-stone-700 shadow-xl shadow-black/10 sm:flex-row">
-          <span className="flex rounded-full bg-orange-500 px-3 py-1 text-white">
-            {Array.from({ length: 5 }).map((_, index) => (
-              <Star key={index} size={16} fill="currentColor" />
-            ))}
-          </span>
-          <span className="font-[var(--font-alt)] text-sm">
-            <strong className="underline">25,000+ happy food lovers</strong> visited our authentic restaurant
-          </span>
-        </div>
-      </section> */}
-
-      {/* <section id="blog" className="px-5 py-24">
-        <div className="mx-auto max-w-6xl">
-          <SectionTitle eyebrow="- From Our Blog -" title="Recent Articles" />
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {blogCards.map(([title, image]) => (
-              <motion.article
-                key={title}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeUp}
-                className="group relative min-h-96 cursor-pointer overflow-hidden rounded-lg"
-              >
-                <img src={image} alt={title} className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 flex flex-col justify-between bg-black/45 p-8 transition group-hover:bg-black/20">
-                  <span className="w-fit bg-white px-3 py-1 font-[var(--font-alt)] text-xs font-bold uppercase text-stone-800 transition group-hover:bg-transparent group-hover:text-white">
-                    Restaurant
-                  </span>
-                  <h3 className="font-[var(--font-heading)] text-4xl uppercase leading-9 text-white">{title}</h3>
-                </div>
-              </motion.article>
-            ))}
-          </div>
-        </div>
-      </section> */}
-
       <Footer />
-
-
-
-      <div className="flex flex-col items-center justify-center gap-4 bg-[#fbf5f5] px-5 py-5 text-center text-stone-700 md:flex-row md:justify-evenly">
-        <p className="font-[var(--font-alt)]">&copy; Copyright {new Date().getFullYear()}</p>
-        <a href="#home" className="font-[var(--font-heading)] text-3xl text-[#fc791a]">UNCLE BIGGS</a>
-        <div className="flex gap-4">
-          <CircleDot size={18} />
-          <Award size={18} />
-          <Wifi size={18} />
-          <Aperture size={18} />
-        </div>
-      </div>
     </main>
   );
 }
 
+// Reusable Section Title
 function SectionTitle({ eyebrow, title }) {
   return (
     <div className="text-center">
-      <p className="font-[var(--font-alt)] text-sm font-bold uppercase tracking-wide text-red-600">{eyebrow}</p>
-      <h2 className="mt-3 font-[var(--font-heading)] text-5xl uppercase leading-none md:text-7xl">{title}</h2>
+      <p className="font-body text-sm font-bold uppercase tracking-widest text-[#fc791a]">{eyebrow}</p>
+      <h2 className="mt-3 font-display text-6xl uppercase leading-none md:text-8xl">{title}</h2>
     </div>
   );
 }

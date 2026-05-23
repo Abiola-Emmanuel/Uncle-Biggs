@@ -1,84 +1,93 @@
 "use client";
 
-import Footer from "@/components/Footer";
-import Navbar from "@/components/Navbar";
+import { useState, useMemo } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
-  ChefHat,
-  Flame,
-  GlassWater,
-  Leaf,
-  Sandwich,
-  Search,
-  ShoppingBag,
-  Sparkles,
-  Star,
-  Utensils,
+  ChefHat, Flame, GlassWater, Leaf, Sandwich, Search,
+  ShoppingBag, Sparkles, Star, Utensils, ArrowRight, Phone, Filter,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
 const categories = {
   "Big Meals": {
     icon: Utensils,
     image: "/expensive1.jpg",
+    color: "from-orange-500 to-red-600",
     items: [
-      ["Biggs Jollof Rice", "Smoky party-style rice, chicken, slaw, and pepper sauce.", "$12.00", "Best Seller"],
-      ["Grilled Chicken Plate", "Flame-grilled chicken with fries and fresh salad.", "$22.00", "Hot"],
-      ["Crispy Fish Meal", "Golden fish fillet, greens, lemon, and creamy dip.", "$15.00", "Fresh"],
-      ["Family Rice Combo", "Rice, chicken, plantain, salad, and chilled drinks.", "$32.00", "Shareable"],
+      ["Biggs Jollof Rice", "Smoky party-style rice, chicken, slaw, and pepper sauce.", "$12.00", "Best Seller", "🔥"],
+      ["Grilled Chicken Plate", "Flame-grilled chicken with fries and fresh salad.", "$22.00", "Hot", "🌶️"],
+      ["Crispy Fish Meal", "Golden fish fillet, greens, lemon, and creamy dip.", "$15.00", "Fresh", "🐟"],
+      ["Family Rice Combo", "Rice, chicken, plantain, salad, and chilled drinks.", "$32.00", "Shareable", "👨‍👩‍👧‍👦"],
+      ["Spicy Chicken Pasta", "Creamy pasta tossed with grilled chicken and peppers.", "$18.00", "Spicy", "🍝"],
+      ["Big Beef Platter", "Beef strips, rice, plantain, and pepper sauce.", "$24.00", "Hearty", "🥩"],
     ],
   },
   Burgers: {
     icon: Sandwich,
     image: "/hero-burger.png",
+    color: "from-amber-500 to-orange-700",
     items: [
-      ["Big Beef Burger", "Juicy beef patty, cheese, lettuce, tomato, and Biggs sauce.", "$22.00", "Signature"],
-      ["Crispy Chicken Burger", "Crunchy chicken fillet, pickles, lettuce, and creamy sauce.", "$13.00", "Popular"],
-      ["Double Stack Burger", "Two patties, melted cheese, onions, and house relish.", "$18.00", "Filling"],
-      ["Veggie Crunch Burger", "Crispy vegetable patty, slaw, and pepper mayo.", "$11.00", "Veggie"],
+      ["Big Beef Burger", "Juicy beef patty, cheese, lettuce, tomato, and Biggs sauce.", "$22.00", "Signature", "🍔"],
+      ["Crispy Chicken Burger", "Crunchy chicken fillet, pickles, lettuce, and creamy sauce.", "$13.00", "Popular", "🍗"],
+      ["Double Stack Burger", "Two patties, melted cheese, onions, and house relish.", "$18.00", "Filling", "🥓"],
+      ["Veggie Crunch Burger", "Crispy vegetable patty, slaw, and pepper mayo.", "$11.00", "Veggie", "🥬"],
     ],
   },
   "Snacks & Sides": {
     icon: Flame,
     image: "/foods-5.webp",
+    color: "from-red-500 to-orange-600",
     items: [
-      ["Crispy Chicken Bites", "Crunchy chicken pieces with a creamy pepper dip.", "$9.00", "Snack"],
-      ["Loaded Spicy Chips", "Hot chips, cheese, peppers, and Biggs seasoning.", "$5.45", "Spicy"],
-      ["Mini Meat Pies", "Warm pastry pockets packed with seasoned filling.", "$11.00", "Classic"],
-      ["Plantain Cups", "Sweet fried plantain served with tomato salsa.", "$14.00", "Sweet"],
+      ["Crispy Chicken Bites", "Crunchy chicken pieces with a creamy pepper dip.", "$9.00", "Snack", "🍿"],
+      ["Loaded Spicy Chips", "Hot chips, cheese, peppers, and Biggs seasoning.", "$5.45", "Spicy", "🍟"],
+      ["Mini Meat Pies", "Warm pastry pockets packed with seasoned filling.", "$11.00", "Classic", "🥟"],
+      ["Plantain Cups", "Sweet fried plantain served with tomato salsa.", "$14.00", "Sweet", "🍌"],
+      ["Spiced Chicken Wings", "Sticky wings tossed in Uncle Biggs hot sauce.", "$12.00", "Sticky", "🍖"],
+      ["Onion Rings", "Crispy battered onion rings with dipping sauce.", "$8.00", "Crunchy", "🧅"],
     ],
   },
   "Fresh Picks": {
     icon: Leaf,
     image: "/salad2.jpg",
+    color: "from-green-500 to-emerald-700",
     items: [
-      ["Fresh Garden Salad", "Leafy greens, avocado, sweet corn, and house dressing.", "$10.00", "Light"],
-      ["Vegetable Rice Plate", "Seasoned rice with grilled vegetables and sauce.", "$16.00", "Veggie"],
-      ["Creamy Mushroom Pasta", "Mushroom sauce, herbs, and a little pepper kick.", "$18.00", "Comfort"],
-      ["Cheesy Tomato Flatbread", "Tomato, mozzarella, basil, and chili honey.", "$15.00", "Cheesy"],
+      ["Fresh Garden Salad", "Leafy greens, avocado, sweet corn, and house dressing.", "$10.00", "Light", "🥗"],
+      ["Vegetable Rice Plate", "Seasoned rice with grilled vegetables and sauce.", "$16.00", "Veggie", "🥦"],
+      ["Creamy Mushroom Pasta", "Mushroom sauce, herbs, and a little pepper kick.", "$18.00", "Comfort", "🍄"],
+      ["Cheesy Tomato Flatbread", "Tomato, mozzarella, basil, and chili honey.", "$15.00", "Cheesy", "🍕"],
     ],
   },
   Drinks: {
     icon: GlassWater,
     image: "/drink5.jpg",
+    color: "from-blue-500 to-cyan-600",
     items: [
-      ["Chapman Classic", "Fruity, fizzy, chilled, and full of color.", "$12.00", "House"],
-      ["Biggs Orange Fizz", "Orange, bubbles, and a bright citrus finish.", "$7.00", "Bright"],
-      ["Mint Lime Refresher", "Lime, mint, cane sugar, and crushed ice.", "$8.00", "Cool"],
-      ["Berry Cooler", "Mixed berries, mint, and soda.", "$6.00", "Sweet"],
+      ["Chapman Classic", "Fruity, fizzy, chilled, and full of color.", "$12.00", "House", "🍹"],
+      ["Biggs Orange Fizz", "Orange, bubbles, and a bright citrus finish.", "$7.00", "Bright", "🍊"],
+      ["Mint Lime Refresher", "Lime, mint, cane sugar, and crushed ice.", "$8.00", "Cool", "🌿"],
+      ["Berry Cooler", "Mixed berries, mint, and soda.", "$6.00", "Sweet", "🫐"],
+      ["Iced Citrus Tea", "Black tea, lemon, and honey syrup.", "$5.00", "Iced", "🧊"],
+      ["Golden Mocktail", "Pineapple, ginger, lime, and tonic.", "$9.00", "Tropical", "🍍"],
     ],
   },
 };
 
 const featuredCombos = [
-  ["Lunch Power Box", "Jollof rice, crispy chicken bites, plantain, slaw, and a chilled drink.", "$19.00", "/popular-2.webp"],
-  ["Biggs Burger Duo", "Two burgers, loaded chips, pepper dip, and two refreshers.", "$29.00", "/popular-1.webp"],
-  ["Family Feast Tray", "Rice combo, grilled chicken, wings, plantain, salad, and drinks.", "$46.00", "/expensive6.jpg"],
+  ["Lunch Power Box", "Jollof rice, crispy chicken bites, plantain, slaw, and a chilled drink.", "$19.00", "/popular-2.webp", "Most Popular"],
+  ["Biggs Burger Duo", "Two burgers, loaded chips, pepper dip, and two refreshers.", "$29.00", "/popular-1.webp", "Best Value"],
+  ["Family Feast Tray", "Rice combo, grilled chicken, wings, plantain, salad, and drinks.", "$46.00", "/expensive6.jpg", "Family Deal"],
 ];
 
 const fadeUp = {
-  hidden: { opacity: 0, y: 28 },
-  visible: { opacity: 1, y: 0 },
+  hidden: { opacity: 0, y: 30 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.08 } },
 };
 
 export default function MenuPage() {
@@ -88,210 +97,299 @@ export default function MenuPage() {
 
   const theme = isDark
     ? "bg-neutral-950 text-stone-100"
-    : "bg-[#f8f6f2] text-[#383632]";
+    : "bg-stone-50 text-stone-900";
 
   const filteredItems = useMemo(() => {
     const items = categories[activeCategory].items;
     if (!query.trim()) return items;
     const cleanQuery = query.trim().toLowerCase();
     return items.filter(([title, description, price, tag]) =>
-      [title, description, price, tag].some((value) => value.toLowerCase().includes(cleanQuery))
+      [title, description, price, tag].some((value) =>
+        value.toLowerCase().includes(cleanQuery)
+      )
     );
   }, [activeCategory, query]);
 
   return (
-    <main className={`min-h-screen overflow-hidden transition-colors duration-500 ${theme}`}>
-      <Navbar isDark={isDark} onToggleDark={() => setIsDark((value) => !value)} />
+    <main className={`min-h-screen overflow-hidden transition-colors duration-700 ${theme} font-body`}>
+      <Navbar isDark={isDark} onToggleDark={() => setIsDark(!isDark)} />
 
-      <section className="relative flex min-h-[86vh] items-center overflow-hidden px-5 pb-16 pt-32">
-        <img src="/menu-hero.webp" alt="Uncle Biggs menu spread" className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-black/70" />
+      {/* Hero Section */}
+      <section className="relative flex items-center overflow-hidden py-32 md:py-40">
+        <Image
+          src="/menu-hero.webp"
+          alt="Uncle Biggs menu spread"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70" />
+
         <motion.div
           initial="hidden"
           animate="visible"
           variants={fadeUp}
-          transition={{ duration: 0.8 }}
-          className="relative z-10 mx-auto grid max-w-7xl items-end gap-10 lg:grid-cols-[1fr_0.85fr] lg:px-8"
+          className="relative z-10 mx-auto max-w-7xl px-5 text-center lg:px-8"
         >
-          <div>
-            <p className="font-[var(--font-alt)] text-sm font-bold uppercase tracking-wide text-[#fc791a]">
-              The Uncle Biggs Menu
-            </p>
-            <h1 className="mt-5 font-[var(--font-heading)] text-7xl uppercase leading-[0.9] text-stroke-white md:text-8xl lg:text-[8.5rem]">
-              Pick Your <span className="block text-white">Favorite</span>
-            </h1>
-            <p className="mt-7 max-w-2xl font-[var(--font-alt)] text-base leading-8 text-stone-200 md:text-lg">
-              From quick snacks to proper family trays, every plate is built around bold flavor,
-              generous portions, and the kind of food people come back for.
-            </p>
-          </div>
-
-          <div className="rounded-lg bg-white/10 p-5 text-white shadow-2xl shadow-black/20 backdrop-blur">
-            <div className="relative h-72 overflow-hidden rounded-lg">
-              <img src="/hero-chicken.png" alt="Uncle Biggs crispy chicken" className="h-full w-full object-contain p-4" />
-            </div>
-            <div className="mt-5 flex items-center justify-between gap-5">
-              <div>
-                <p className="font-[var(--font-heading)] text-4xl uppercase leading-none">Today&apos;s Craving</p>
-                <p className="font-[var(--font-alt)] text-sm text-stone-300">Golden chicken, hot sides, cold drinks.</p>
-              </div>
-              <span className="grid size-14 place-items-center rounded-full bg-[#fc791a]">
-                <ChefHat size={24} />
-              </span>
-            </div>
-          </div>
+          <motion.p
+            variants={fadeUp}
+            className="font-body text-sm font-bold uppercase tracking-[0.3em] text-[#fc791a]"
+          >
+            Our Full Menu
+          </motion.p>
+          <motion.h1
+            variants={fadeUp}
+            className="mt-6 font-display text-7xl uppercase leading-[0.85] text-white md:text-8xl lg:text-[9rem]"
+          >
+            Big Flavor, <br />
+            <span className="text-stroke-orange">Every Bite</span>
+          </motion.h1>
+          <motion.p
+            variants={fadeUp}
+            className="mt-6 mx-auto max-w-2xl font-body text-lg text-stone-200"
+          >
+            From hearty meals to refreshing drinks — everything made fresh daily
+            for your biggest cravings.
+          </motion.p>
         </motion.div>
       </section>
 
-      <section className="relative py-20">
-        <h2 className="pointer-events-none text-center font-[var(--font-heading)] text-7xl uppercase leading-none text-stone-500/20 md:text-[8rem] lg:text-[12rem]">
-          Menu
-        </h2>
-
-        <div className="relative mx-auto -mt-2 max-w-7xl px-5 lg:px-8">
-          <div className="flex flex-col gap-6 rounded-lg bg-[#282725] p-5 text-white shadow-xl shadow-black/10 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="font-[var(--font-heading)] text-4xl uppercase leading-none">Browse By Craving</p>
-              <p className="mt-1 font-[var(--font-alt)] text-sm text-stone-300">Switch categories or search for a meal, drink, or tag.</p>
-            </div>
-            <label className="relative w-full md:max-w-sm">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={18} />
-              <input
-                value={query}
-                onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search menu"
-                className="h-12 w-full rounded-md border border-white/10 bg-white pl-11 pr-4 font-[var(--font-alt)] text-sm text-stone-900 outline-none transition focus:border-[#fc791a] focus:ring-2 focus:ring-[#fc791a]/30"
-              />
-            </label>
-          </div>
-
-          <div className="mt-10 grid gap-8 lg:grid-cols-[280px_1fr]">
-            <div className="grid h-fit gap-3">
-              {Object.entries(categories).map(([category, data]) => {
-                const Icon = data.icon;
-                const isActive = category === activeCategory;
-
-                return (
-                  <button
-                    key={category}
-                    type="button"
-                    onClick={() => setActiveCategory(category)}
-                    className={`flex items-center justify-between rounded-lg border p-4 text-left transition ${isActive
-                      ? "border-[#fc791a] bg-[#fc791a] text-white shadow-lg shadow-orange-500/20"
-                      : isDark
-                        ? "border-white/10 bg-white/5 hover:border-[#fc791a]"
-                        : "border-stone-200 bg-white/80 hover:border-[#fc791a]"
-                      }`}
-                  >
-                    <span className="flex items-center gap-3">
-                      <Icon size={22} />
-                      <span className="font-[var(--font-alt)] text-sm font-bold uppercase">{category}</span>
-                    </span>
-                    <span className="font-[var(--font-alt)] text-xs">{data.items.length}</span>
-                  </button>
-                );
-              })}
-            </div>
-
-            <div className="grid gap-8 xl:grid-cols-[1fr_360px]">
-              <AnimatePresence mode="wait">
-                <motion.div
-                  key={activeCategory}
-                  initial={{ opacity: 0, y: 18 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -18 }}
-                  transition={{ duration: 0.25 }}
-                  className="grid gap-4"
-                >
-                  {filteredItems.map(([title, description, price, tag]) => (
-                    <article
-                      key={title}
-                      className={`group grid gap-4 rounded-lg border p-4 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-black/10 sm:grid-cols-[1fr_auto] ${isDark
-                        ? "border-white/10 bg-white/5"
-                        : "border-stone-200 bg-white/80"
-                        }`}
-                    >
-                      <div>
-                        <div className="flex flex-wrap items-center gap-3">
-                          <h3 className="font-[var(--font-alt)] text-lg font-extrabold">{title}</h3>
-                          <span className="rounded-full bg-red-600 px-3 py-1 font-[var(--font-alt)] text-xs font-bold uppercase text-white">
-                            {tag}
-                          </span>
-                        </div>
-                        <p className={`mt-2 font-[var(--font-alt)] leading-7 ${isDark ? "text-stone-400" : "text-stone-500"}`}>
-                          {description}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-4 sm:justify-end">
-                        <p className="font-[var(--font-heading)] text-4xl uppercase leading-none text-[#fc791a]">{price}</p>
-                        <button
-                          type="button"
-                          aria-label={`Add ${title} to order`}
-                          className="grid size-11 place-items-center rounded-full bg-[#282725] text-white transition group-hover:bg-[#fc791a]"
-                        >
-                          <ShoppingBag size={18} />
-                        </button>
-                      </div>
-                    </article>
-                  ))}
-
-                  {filteredItems.length === 0 && (
-                    <div className={`rounded-lg border p-8 text-center ${isDark ? "border-white/10 bg-white/5" : "border-stone-200 bg-white/80"}`}>
-                      <p className="font-[var(--font-heading)] text-4xl uppercase leading-none">No Match Yet</p>
-                      <p className={`mt-2 font-[var(--font-alt)] ${isDark ? "text-stone-400" : "text-stone-500"}`}>Try another meal name, tag, or category.</p>
-                    </div>
-                  )}
-                </motion.div>
-              </AnimatePresence>
-
-              <aside className="h-fit overflow-hidden rounded-lg bg-[#282725] text-white shadow-xl shadow-black/10">
-                <img src={categories[activeCategory].image} alt={`${activeCategory} preview`} className="h-72 w-full object-cover" />
-                <div className="p-6">
-                  <div className="flex items-center gap-2 text-[#fc791a]">
-                    <Sparkles size={18} />
-                    <p className="font-[var(--font-alt)] text-sm font-bold uppercase">Chef&apos;s Note</p>
-                  </div>
-                  <p className="mt-4 font-[var(--font-heading)] text-4xl uppercase leading-none">
-                    {activeCategory} Built The Biggs Way.
-                  </p>
-                  <p className="mt-3 font-[var(--font-alt)] leading-7 text-stone-300">
-                    Served hot, packed with flavor, and ready for dine-in, pickup, or sharing with your people.
-                  </p>
-                </div>
-              </aside>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className={`py-20 ${isDark ? "bg-neutral-900" : "bg-white/60"}`}>
+      {/* Featured Combos */}
+      <section className={`py-20 ${isDark ? "bg-neutral-900" : "bg-white"}`}>
         <div className="mx-auto max-w-7xl px-5 lg:px-8">
-          <div className="text-center">
-            <p className="font-[var(--font-alt)] text-sm font-bold uppercase tracking-wide text-red-600">Combo favorites</p>
-            <h2 className="mt-3 font-[var(--font-heading)] text-5xl uppercase leading-none md:text-7xl">Made To Share</h2>
+          <div className="text-center mb-16">
+            <p className="font-body text-sm font-bold uppercase tracking-widest text-[#fc791a]">
+              Value Packs
+            </p>
+            <h2 className="mt-3 font-display text-6xl uppercase leading-none md:text-7xl">
+              Uncle Biggs Combos
+            </h2>
           </div>
 
-          <div className="mt-10 grid gap-6 md:grid-cols-3">
-            {featuredCombos.map(([title, description, price, image]) => (
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={stagger}
+            className="grid gap-8 md:grid-cols-3"
+          >
+            {featuredCombos.map(([title, desc, price, image, badge]) => (
               <motion.article
                 key={title}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.25 }}
                 variants={fadeUp}
-                className={`overflow-hidden rounded-lg shadow-xl shadow-black/10 ${isDark ? "bg-white/5" : "bg-[#f8f6f2]"}`}
-              >
-                <img src={image} alt={title} className="h-64 w-full object-cover" />
-                <div className="p-6">
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="font-[var(--font-heading)] text-4xl uppercase leading-none">{title}</h3>
-                    <span className="font-[var(--font-heading)] text-4xl leading-none text-[#fc791a]">{price}</span>
+                className="group relative overflow-hidden rounded-2xl bg-stone-50 shadow-xl shadow-stone-200/50 transition-all hover:-translate-y-1 hover:shadow-2xl"
+            >
+                <div className="relative h-64 overflow-hidden">
+                  <Image
+                    src={image}
+                    alt={title}
+                    fill
+                    sizes="(min-width: 768px) 33vw, 100vw"
+                    className="object-cover transition-transform duration-700 group-hover:scale-110"
+                  />
+                  <div className="absolute top-4 left-4 rounded-full bg-[#fc791a] px-4 py-1 font-display text-sm uppercase text-white shadow">
+                    {badge}
                   </div>
-                  <p className={`mt-3 font-[var(--font-alt)] leading-7 ${isDark ? "text-stone-400" : "text-stone-500"}`}>{description}</p>
+                  <div className="absolute top-4 right-4 rounded-full bg-black/70 px-4 py-1 font-display text-xl text-white backdrop-blur-sm">
+                    {price}
+                  </div>
+                </div>
+                <div className="p-6">
+                  <h3 className="font-display text-3xl uppercase leading-none">{title}</h3>
+                  <p className={`mt-3 font-body text-sm leading-relaxed ${isDark ? "text-stone-400" : "text-stone-500"}`}>
+                    {desc}
+                  </p>
+                  <button className="mt-5 inline-flex items-center gap-2 rounded-full bg-[#fc791a] px-6 py-3 font-display text-sm uppercase text-white transition-all hover:bg-black hover:shadow-lg">
+                    Order Now
+                    <ShoppingBag size={16} />
+                  </button>
                 </div>
               </motion.article>
             ))}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Full Menu with Search & Filters */}
+      <section className="py-24">
+        <div className="mx-auto max-w-7xl px-5 lg:px-8">
+          <div className="text-center mb-8">
+            <p className="font-body text-sm font-bold uppercase tracking-widest text-[#fc791a]">
+              Browse By Category
+            </p>
+            <h2 className="mt-3 font-display text-6xl uppercase leading-none md:text-7xl">
+              Complete Menu
+            </h2>
           </div>
+
+          {/* Search Bar */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mx-auto mt-10 max-w-xl"
+          >
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400" size={20} />
+              <input
+                type="text"
+                placeholder="Search menu items..."
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className={`w-full rounded-full border py-4 pl-12 pr-6 font-body text-sm transition-all focus:outline-none focus:ring-2 focus:ring-[#fc791a]/50 ${isDark
+                    ? "border-white/10 bg-white/5 text-white placeholder:text-stone-500"
+                    : "border-stone-200 bg-white text-stone-900 placeholder:text-stone-400"
+                  }`}
+              />
+            </div>
+          </motion.div>
+
+          {/* Category Tabs */}
+          <div className="mt-10 flex flex-wrap justify-center gap-3 md:gap-4">
+            {Object.entries(categories).map(([category, data]) => (
+              <motion.button
+                key={category}
+                onClick={() => {
+                  setActiveCategory(category);
+                  setQuery("");
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className={`group inline-flex items-center gap-2 rounded-full px-6 py-3 font-body text-sm font-semibold uppercase transition-all ${activeCategory === category
+                    ? "bg-[#fc791a] text-white shadow-lg shadow-orange-500/30"
+                    : isDark
+                      ? "bg-white/5 text-stone-300 hover:bg-white/10"
+                      : "bg-stone-100 text-stone-600 hover:bg-stone-200"
+                  }`}
+              >
+                <data.icon size={18} />
+                {category}
+              </motion.button>
+            ))}
+          </div>
+
+          {/* Category Header */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ duration: 0.3 }}
+              className="mt-12"
+            >
+              <div className={`relative overflow-hidden rounded-2xl bg-gradient-to-r ${categories[activeCategory].color} p-8 text-white shadow-xl md:p-12`}>
+                <div className="relative z-10 flex items-center gap-4">
+                  <div className="rounded-full bg-white/20 p-4 backdrop-blur-sm">
+                    {(() => {
+                      const IconComponent = categories[activeCategory].icon;
+                      return <IconComponent size={32} />;
+                    })()}
+                  </div>
+                  <div>
+                    <p className="font-display text-4xl uppercase md:text-5xl">{activeCategory}</p>
+                    <p className="mt-1 font-body text-sm text-white/80">
+                      {filteredItems.length} items
+                    </p>
+                  </div>
+                </div>
+                <div className="absolute right-4 top-4 text-[12rem] text-white/10">
+                  {(() => {
+                    const IconComponent = categories[activeCategory].icon;
+                    return <IconComponent size={200} />;
+                  })()}
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Menu Grid */}
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={activeCategory + query}
+              initial="hidden"
+              animate="visible"
+              exit="hidden"
+              variants={stagger}
+              className="mt-10 grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+            >
+              {filteredItems.length > 0 ? (
+                filteredItems.map(([title, desc, price, tag, emoji]) => (
+                  <motion.article
+                    key={title}
+                    variants={fadeUp}
+                    className={`group relative overflow-hidden rounded-2xl p-6 transition-all hover:-translate-y-1 hover:shadow-xl ${isDark
+                        ? "bg-white/5 hover:bg-white/10"
+                        : "bg-white shadow-lg shadow-stone-200/50 hover:shadow-stone-300/50"
+                      }`}
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <div className="flex items-center gap-2">
+                          <span className="text-2xl">{emoji}</span>
+                          <h3 className="font-display text-2xl uppercase leading-tight">{title}</h3>
+                        </div>
+                        <p className={`mt-2 font-body text-sm leading-relaxed ${isDark ? "text-stone-400" : "text-stone-500"}`}>
+                          {desc}
+                        </p>
+                        <div className="mt-3 flex items-center gap-3">
+                          <span className="rounded-full bg-[#fc791a]/10 px-3 py-1 font-body text-xs font-bold text-[#fc791a]">
+                            {tag}
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex items-center justify-between border-t border-stone-200 pt-4 dark:border-white/10">
+                      <p className="font-display text-3xl text-[#fc791a]">{price}</p>
+                      <button className="rounded-full bg-[#fc791a] p-2 text-white transition-all hover:bg-black hover:shadow-lg">
+                        <ShoppingBag size={18} />
+                      </button>
+                    </div>
+                  </motion.article>
+                ))
+              ) : (
+                <motion.div
+                  variants={fadeUp}
+                  className="col-span-full py-20 text-center"
+                >
+                  <Search className="mx-auto text-stone-400" size={48} />
+                  <p className="mt-4 font-display text-3xl uppercase">No items found</p>
+                  <p className={`mt-2 font-body ${isDark ? "text-stone-400" : "text-stone-500"}`}>
+                    Try adjusting your search or filter.
+                  </p>
+                </motion.div>
+              )}
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Bottom CTA */}
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="mt-20 text-center"
+          >
+            <p className={`font-body text-lg ${isDark ? "text-stone-300" : "text-stone-600"}`}>
+              Can&apos;t decide? Let us help you choose.
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-4">
+              <a
+                href="tel:1800222000"
+                className="group inline-flex items-center gap-2 rounded-full bg-[#fc791a] px-8 py-4 font-display text-xl uppercase text-white transition-all hover:bg-black hover:shadow-xl hover:shadow-orange-500/25"
+              >
+                <Phone size={20} />
+                Call to Order
+              </a>
+              <Link
+                href="/#about"
+                className="inline-flex items-center gap-2 rounded-full border-2 border-stone-300 px-8 py-4 font-display text-xl uppercase transition-all hover:border-black hover:text-white hover:bg-black dark:border-white/20 dark:hover:border-white dark:hover:bg-white dark:hover:text-black"
+              >
+                Visit Us
+                <ArrowRight size={20} />
+              </Link>
+            </div>
+          </motion.div>
         </div>
       </section>
 

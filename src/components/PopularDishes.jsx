@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import Image from "next/image";
 import { Autoplay, Navigation, Pagination } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -57,10 +58,12 @@ export default function PopularDishes({ isDark }) {
                   className="group overflow-hidden rounded-lg"
                 >
                   <div className="relative aspect-[4/5] overflow-hidden rounded-lg">
-                    <img
+                    <Image
                       src={image}
                       alt={title}
-                      className="h-full w-full object-cover transition duration-500 group-hover:scale-95"
+                      fill
+                      sizes="(min-width: 1280px) 25vw, (min-width: 1024px) 33vw, (min-width: 640px) 50vw, 90vw"
+                      className="object-cover transition duration-500 group-hover:scale-95"
                     />
                     <div className="absolute inset-0 grid place-items-center  shadow-xl opacity-0 transition duration-500 group-hover:opacity-100">
                       <span className="grid size-24 place-items-center rounded-full bg-white font-[var(--font-heading)] text-3xl text-red-600">
