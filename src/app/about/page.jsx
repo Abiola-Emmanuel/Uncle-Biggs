@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import {
   Clock3, HeartHandshake, MapPin, Sandwich, ShoppingBag,
@@ -36,17 +36,13 @@ const milestones = [
 ];
 
 export default function About() {
-  const [isDark, setIsDark] = useState(false);
   const statsRef = useRef(null);
   const statsInView = useInView(statsRef, { once: true, amount: 0.5 });
-
-  const theme = isDark
-    ? "bg-neutral-950 text-stone-100"
-    : "bg-stone-50 text-stone-900";
+  const isDark = false;
 
   return (
-    <main className={`min-h-screen overflow-hidden transition-colors duration-700 ${theme} font-body`}>
-      <Navbar isDark={isDark} onToggleDark={() => setIsDark(!isDark)} />
+    <main className="min-h-screen overflow-hidden bg-stone-50 text-stone-900 font-body">
+      <Navbar />
 
       {/* Hero Section — kept strong, slightly refined */}
       <section className="relative flex h-screen items-center overflow-hidden">

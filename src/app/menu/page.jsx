@@ -91,13 +91,9 @@ const stagger = {
 };
 
 export default function MenuPage() {
-  const [isDark, setIsDark] = useState(false);
   const [activeCategory, setActiveCategory] = useState("Big Meals");
   const [query, setQuery] = useState("");
-
-  const theme = isDark
-    ? "bg-neutral-950 text-stone-100"
-    : "bg-stone-50 text-stone-900";
+  const isDark = false;
 
   const filteredItems = useMemo(() => {
     const items = categories[activeCategory].items;
@@ -111,8 +107,8 @@ export default function MenuPage() {
   }, [activeCategory, query]);
 
   return (
-    <main className={`min-h-screen overflow-hidden transition-colors duration-700 ${theme} font-body`}>
-      <Navbar isDark={isDark} onToggleDark={() => setIsDark(!isDark)} />
+    <main className="min-h-screen overflow-hidden bg-stone-50 text-stone-900 font-body">
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative flex items-center overflow-hidden py-32 md:py-40">

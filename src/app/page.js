@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import {
   BookOpen, Phone, Truck, Award, ShoppingBag, ChevronDown, ArrowRight, Star,
@@ -77,24 +77,12 @@ const stagger = {
 };
 
 export default function Home() {
-  const [isDark, setIsDark] = useState(false);
   const [activeCategory, setActiveCategory] = useState("Big Meals");
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  const theme = isDark
-    ? "bg-neutral-950 text-stone-100"
-    : "bg-stone-50 text-stone-900";
 
   return (
-    <main className={`min-h-screen overflow-hidden transition-colors duration-700 ${theme} font-body`}>
+    <main className="min-h-screen overflow-hidden bg-stone-50 text-stone-900 font-body">
       {/* --- Navbar --- */}
-      <Navbar isDark={isDark} onToggleDark={() => setIsDark(!isDark)} scrolled={scrolled} />
+      <Navbar />
 
       {/* --- Hero Section --- */}
       <section id="home" className="relative flex h-screen items-center justify-center overflow-hidden">

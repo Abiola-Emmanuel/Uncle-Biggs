@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { motion } from "framer-motion";
 import {
   CalendarDays, Clock3, Mail, MapPin,
@@ -38,15 +37,11 @@ const hours = [
 ];
 
 export default function ContactPage() {
-  const [isDark, setIsDark] = useState(false);
-
-  const theme = isDark
-    ? "bg-neutral-950 text-stone-100"
-    : "bg-stone-50 text-stone-900";
+  const isDark = false;
 
   return (
-    <main className={`min-h-screen overflow-hidden transition-colors duration-700 ${theme} font-body`}>
-      <Navbar isDark={isDark} onToggleDark={() => setIsDark(!isDark)} />
+    <main className="min-h-screen overflow-hidden bg-stone-50 text-stone-900 font-body">
+      <Navbar />
 
       {/* Hero Section */}
       <section className="relative flex min-h-[90vh] items-center overflow-hidden">
